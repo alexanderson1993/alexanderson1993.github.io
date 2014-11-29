@@ -1,0 +1,93 @@
+<html>
+<body onclick="">
+	<select>
+
+	</select>
+	<canvas id="c" width="1000" height="1000"></canvas>
+	<script>
+		var q=500;
+		var w=500;
+		var a = Math.round(Math.random()*400);
+		var ab = Math.round(Math.random()*40);
+		var c = Math.round(Math.random()*40);
+
+		for (i=1; i<=q; i+=1){
+			for (j=1; j<=w; j+=1){
+				drawPixel(i,j);
+			}
+		}
+		var b_canvas = document.getElementById("c");
+		var img = b_canvas.toDataURL("image/png;base64;");
+
+		//window.location.href = img;
+		//var b_canvas = document.getElementById("c");
+		//var img = b_canvas.toDataURL("image/png;base64;");
+		//window.open(img,"","width=3000,height=2250");
+
+
+		function drawPixel(x,y){
+			var b_canvas = document.getElementById("c");
+			var b_context = b_canvas.getContext("2d");
+			b_context.fillStyle = calculateColor(x,y);
+			b_context.fillRect(x*2, y*2, 2,2);
+		}
+		function calculateColor(x,y){
+			/*var r= (x+y)%255;
+			var g= (y*1.52)%255;
+			var b= (y*2)%255;
+
+
+			var r=(x-y)%255;
+			var g=(x)%255;
+			var b=(y)%100;
+
+			var r=(y)%255;
+			var g=(x)%255;
+			var b=(x+y)%255;
+
+			var r=(x^y)%255;
+			var g=(x*x)%255;
+			var b=(y)%255;
+
+			var r=Math.floor((y*0.52)%255);
+			var g=(y*2)%255;
+			var b=(x-y)%255;
+			
+
+			var r=(y*2)%255;
+			var g=(x+r^10)%255;
+			var b=(x+g^10)%255;
+			var r=(x+b^10)%255;
+			
+
+			var r=(255%(x+y)%128)
+			var g=(255%x)%255;
+			var b=(255%y)%255;
+			
+			*/
+
+			//return rgbToHex(r,g,b);
+			
+			var c=(y^x)%100;
+			var m=(x)%100;
+			var y=(x+y)%100;
+			var k=(x-y)%100;
+			return cmykToHex(c,m,y,k);
+		}
+		function cmykToHex(c,m,y,k){
+			var r = 255 * (1-(c/100)) * (1-(k/100));
+			var g = 255 * (1-(m/100)) * (1-(k/100));
+			var b = 255 * (1-(y/100)) * (1-(k/100));
+			return rgbToHex(r,g,b);
+		}
+		function componentToHex(c) {
+			var hex = c.toString(16);
+			return hex.length == 1 ? "0" + hex : hex;
+		}
+
+		function rgbToHex(r, g, b) {
+			return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+		}
+	</script>
+</body>
+</html>
