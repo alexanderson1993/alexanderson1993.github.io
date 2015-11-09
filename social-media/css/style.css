@@ -1,0 +1,16 @@
+body{
+	background-color:#efefef;
+	font-family:Helvetica,Sans-serif
+}
+body p{
+	color:#333
+}
+.imagebox img{
+	border: 5px solid rgb(170,170,170);
+}
+.instagram-description{
+	height: 100px;
+	overflow: hidden;
+	max-width:100%;
+	margin-right:10%;
+}
