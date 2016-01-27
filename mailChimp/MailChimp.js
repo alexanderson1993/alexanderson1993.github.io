@@ -197,25 +197,27 @@ function sendEmail() {
     }
     if (document.getElementById('sendemail').checked){
         var userHash = calcMD5(email.toLowerCase());
-        var url = endpoint + 'lists/' + listId + '/members/' + userHash;
-        var verb = 'PUT';
-        var body = JSON.stringify({
-            email_type: 'html',
-            status: 'subscribed',
-            email_address: email,
-            merge_fields: {
-                "FNAME": firstName,
-                "LNAME": lastName
-            },
-        });
-        var r = new XMLHttpRequest();
-        r.open(verb, url, true);
-        r.setRequestHeader('Authorization', auth);
-        r.onreadystatechange = function () {
+       var body = JSON.stringify({
+        listId:listId,
+        userHash:userHash,
+        email_type: 'html',
+        status: 'subscribed',
+        email_address: email,
+        merge_fields: {
+            "FNAME": firstName,
+            "LNAME": lastName
+        },
+    });
+       var url = 'http://staging.blenderbottle.com/maillist/?body=' + body;
+       var verb = 'POST';
+       var r = new XMLHttpRequest();
+       r.open(verb, url, true);
+       r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+       r.onreadystatechange = function () {
           if (r.readyState != 4 || r.status != 200) return;
           console.log("Success: " + r.responseText);
       };
-      r.send(body);
+      r.send({body:body});
   }
   document.getElementById('emailForm').classList.add('hidden');
   document.getElementById('download').classList.remove('hidden');

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>GNC GoStak Promotion</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+	<header class="container-fluid">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<a href="http://blenderbottle.com">
+						<div class="logo-bb">
+						</div>
+					</a>
+				</div>
+				<div class="col-sm-3 col-sm-offset-6">
+						<div class="logo-gnc">
+						</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="container">
+		<section id="video" class="row">
+			<div class="col-sm-7">
+				<div class="embed-responsive embed-responsive-16by9">
+					<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/aq0ZnvNm7tU" frameborder="0" allowfullscreen></iframe>
+				</div>
+			</div>
+			<div class="col-sm-5">
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-3 text-center">
+						<h2>Find a GoStak® in a <div style="height: 40px; margin: 20px;" class="logo-gnc">
+						</div> near you</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-3">
+						<div class="input-group">
+							<input type="number" id="zip" class="form-control" placeholder="Zip Code" onkeyup="keyCheck(event)">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" onclick="centerMap()">Go!</button>
+							</span>
+						</div><!-- /input-group -->
+					</div>
+				</div>
+			</div>
+		</section>
+		<section id="gostak" class="row">
+			<div class="col-sm-2">
+				<img class="img-responsive" src="http://www.myopure.com.au/wp-content/uploads/bbgs_s4pk_green.jpg" alt="GoStak®" />
+			</div>
+			<div class="col-sm-3">
+				<h4>ENDLESS POSSIBILITIES</h4>
+
+				<p>Not taking supplements? No problem. There's no right or wrong way to use a GoStak:</p>
+				<ul>
+					<li>Vitamins & Pills</li>
+					<li>Fruits & Vegetables</li>
+					<li>Nuts & Trail Mixes</li>
+					<li>Dips & Spreads</li>
+					<li>Snacks & Candy</li>
+					<li>Travel Items & More</li>
+				</ul>
+			</div>
+			<div class="col-sm-7">
+				<p>GoStaks are a smart and sleek advancement in portable nutrition. Durable jars secure tightly to carry powders, vitamins, supplements, snacks, and more. The 150cc jar holds 87% of protein powder servings so whether you pack pre-, intra-, and post-workout supplements to the gym, or simply need a versatile system for snacks and small items, the GoStak has you covered.</p>
+				<p>The GoStak jars are designed to be sleek and compact, giving you just enough room for your supplements, without invading your gym bag.   Heading out of town? Take a handful of 150cc jars filled with your post-workout supplements, and you've got an instant recovery shake for every day of the week.</p>
+			</div>
+		</section>
+	</div>
+	<div class="container-fluid">
+		<section class="row">
+			<div id="map" class="col-sm-12">
+			</div>
+		</section>
+	</div>
+	<div class="container">
+		<footer class="row">
+			<div class="col-sm-12 text-center">
+				<p>©2016 BlenderBottle Company. U.S. and Foreign Utility and Design Patents Issued and Pending. All Rights Reserved.</p>
+			</div>
+		</footer>
+	</div>
+	<script>
+		geoip_lat = 40.3641131; //<?php print $xml->geoplugin_latitude; ?>;
+		geoip_long = -111.7735594; //<?php print $xml->geoplugin_longitude; ?>;
+	</script>
+	<script src="maps.js"></script>
+	<script src="locations.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm-K4-kDFiCg0Z3vkGVERLou78dJZWWCE&callback=initMap" type="text/javascript"></script>
+</body>
+</html>
