@@ -47,7 +47,7 @@ function initMap(){
 	map.setTilt(0);
 	addPins();
 
-	var apiKey = "AIzaSyA_b7MQnxQGupm2TwuAmN7bcHViVzeGqX0";
+	var apiKey = "AIzaSyBLRVMQ-CFuPa09aLjBic8MG2e6z1WIkeM";
 	if ("geolocation" in navigator) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
