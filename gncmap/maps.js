@@ -78,7 +78,8 @@ function initMap(){
 			});
 			contentString = "<h3>" + e.centerName + "</h3>" +
 			"<p>" + e.address + "</p>" +
-			"<p>" + e.city + ", " + e.state + " " + e.zip + "</p>";
+			"<p>" + e.city + ", " + e.state + " " + e.zip + "</p>" +
+			"<p><a href='https://maps.google.com?saddr=Current+Location&daddr=" + e.latitude + "," + e.longitude + "'>Get Directions</a></p>";
 			infoWindows[e.storeNum] = new google.maps.InfoWindow({
 				content:contentString
 			});
