@@ -59,20 +59,20 @@
 			var b=(x+g^10)%255;
 			var r=(x+b^10)%255;
 			
-
+*/
 			var r=(255%(x+y)%128)
 			var g=(255%x)%255;
 			var b=(255%y)%255;
 			
-			*/
-
-			//return rgbToHex(r,g,b);
 			
-			var c=(y^x)%100;
+
+			return rgbToHex(r,g,b);
+			
+			/*var c=(y^x)%100;
 			var m=(x)%100;
 			var y=(x+y)%100;
 			var k=(x-y)%100;
-			return cmykToHex(c,m,y,k);
+			return cmykToHex(c,m,y,k);*/
 		}
 		function cmykToHex(c,m,y,k){
 			var r = 255 * (1-(c/100)) * (1-(k/100));
