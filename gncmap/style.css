@@ -123,6 +123,9 @@ input#zip.form-control{
 	float: left;
 	border: solid 1px #2b2b2b;
 }
+#video{
+	margin-bottom: 100px;
+}
 .search-btn{
 	width: 153px;
 	float: left;
@@ -172,7 +175,7 @@ input#zip.form-control{
 .side-text span{
 	font-size: 5.5em;
 	line-height: 0.9;
-	font-family: 'flama_semibold', Arial;
+	font-family: 'flamasemiblack', Arial;
 	text-transform: uppercase;
 }
 .side-text .span-inline{
