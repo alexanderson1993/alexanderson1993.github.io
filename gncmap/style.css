@@ -235,6 +235,15 @@ input#zip.form-control{
 	}
 }
 @media (max-width: 767px){
+	header{
+		margin-bottom: 30px;
+}
+.row.header-row{
+	margin-top: 1vw;
+}
+.row.headspace{
+ margin-top: 60px;
+}
 	.side-text{
 		width: 60vw;
 		margin: 0 auto;
@@ -256,10 +265,16 @@ input#zip.form-control{
 		margin: 0 auto;
 	}
 	input#zip.form-control{
-		width: 60%;
+		width: 100%;
+		margin: 0;
 	}
 	.search-btn{
-		width: 30%;
+				margin: 0;
+		margin-top: 15px;
+		width: 100%;
+	}
+	.logo-bb{
+		margin: 0 auto;
 	}
 }
 .logo-bb{
