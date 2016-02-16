@@ -178,15 +178,89 @@ input#zip.form-control{
 	font-family: 'flamasemiblack', Arial;
 	text-transform: uppercase;
 }
+.side-text .top-text{
+	font-size: 8.25em;
+}
+.side-text .middle-text{
+	font-size: 5.7em;
+}
 .side-text .span-inline{
 	display: inline;
 }
 .side-text .small-text{
 	font-family: 'flama_basic', Arial;
-	font-size: 1.7em;
+	font-size: 1.6em;
 	margin-top: 20px;
 	display: block;
 	float:left;
+}
+@media (max-width: 1200px){
+	.side-text span{
+		font-size: 5em;
+	}
+	.side-text .top-text{
+		font-size: 7.5em;
+	}
+	.side-text .middle-text{
+		font-size: 5.2em;
+	}
+	.side-text .small-text{
+		font-size: 1.6em;
+	}	
+	input#zip.form-control{
+		width: 220px;
+	}
+	.search-btn{
+		width: 133px;
+	}
+}
+@media (max-width: 992px){
+	.side-text span{
+		font-size: 4em;
+	}
+	.side-text .top-text{
+		font-size: 6em;
+	}
+	.side-text .middle-text{
+		font-size: 4.15em;
+	}
+	.side-text .small-text{
+		font-size: 1.2em;
+	}	
+	input#zip.form-control{
+		width: 180px;
+	}
+	.search-btn{
+		width: 100px;
+	}
+}
+@media (max-width: 767px){
+	.side-text{
+		width: 60vw;
+		margin: 0 auto;
+	}
+	.side-text span{
+		font-size: 11vw;
+	}
+	.side-text .top-text{
+		font-size: 16.4vw;
+	}
+	.side-text .middle-text{
+		font-size: 11.42vw;
+	}
+	.side-text .small-text{
+		font-size: 3.3vw;
+	}	
+	.zip-search{
+		width: 60vw;
+		margin: 0 auto;
+	}
+	input#zip.form-control{
+		width: 60%;
+	}
+	.search-btn{
+		width: 30%;
+	}
 }
 .logo-bb{
 	background-image: url(BlenderBottle_Logo.svg);
