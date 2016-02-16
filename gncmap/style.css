@@ -1,10 +1,102 @@
+@font-face {
+	font-family: 'flama_basic';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-basic.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-basic.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-basic.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-basic.ttf') format('truetype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-basic.svg#flama_basic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'flama_semibold';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.ttf') format('truetype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.svg#flama_semibold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+
+}
+@font-face {
+	font-family: 'flama_light';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.ttf') format('truetype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.svg#flamalight-webfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+
+}
+@font-face {
+	font-family: 'flama_medium';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-medium.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-medium.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-medium.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-medium.ttf') format('truetype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flama-medium.svg#flama_medium') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'flamalightregular';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.ttf') format('truetype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/flamalight-webfont.svg#flamalightregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'flamasemicon';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Semibold.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Semibold.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Semibold.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Semibold.svg#flamasemicon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'flamasemiconbold';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Bold.svg#flamasemiconbold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'flamasemiblack';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Black.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Black.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Black.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Black.svg#flamasemiblack') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'flamasemiconbasic';
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Basic.eot');
+	src: url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Basic.eot?#iefix') format('embedded-opentype'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Basic.woff') format('woff'),
+	url('http://www.blenderbottle.com/skin/frontend/default/blender_responsive/css/fonts/FlamaSemicondensed-Basic.svg#flamasemiconbasic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body{
-	background-color: #222;
+	background-color: #000;
 	color:#fff;
+	font-family: 'flama_basic', Arial;
 }
 header{
 	height: 60px;
 	background-color: #444;
+	margin-bottom: 100px;
 }
 header .container{
 	height: 100%;
@@ -18,10 +110,86 @@ header .row{
 header .row div{
 	height: 100%;
 }
+::-webkit-input-placeholder { text-align:center; }
+::-moz-placeholder { text-align:center; } /* firefox 19+ */
+:-ms-input-placeholder { text-align:center; } /* ie */
+input:-moz-placeholder { text-align:center; }
+.zip-search{
+	margin: 0 auto;
+}
+input#zip.form-control{
+	border-radius:0;
+	width: 240px;
+	float: left;
+	border: solid 1px #2b2b2b;
+}
+.search-btn{
+	width: 153px;
+	float: left;
+	border-radius: 0;
+	background-color: #2B2B2B;
+	text-transform: uppercase;
+	color: #fff;
+	margin-left: 20px;
+	border: solid 1px #202020;
+}
+.search-btn::after{
+	background-image: url("http://www.blenderbottle.com/skin/frontend/default/blender_responsive/images/sprite.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-position: -100px -50px;
+	content: " ";
+	display: inline-block;
+	width: 14px;
+	height: 10px;
+
+	margin-left: 5px;
+}
+.buy-btn{
+	width: 153px;
+	float: left;
+	border-radius: 0;
+	background-color: #2B2B2B;
+	text-transform: uppercase;
+	color: #fff;
+	border: solid 1px #202020;
+}
+.buy-btn::after{
+	background-image: url("http://www.blenderbottle.com/skin/frontend/default/blender_responsive/images/sprite.png");
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-position: -100px -50px;
+	content: " ";
+	display: inline-block;
+	width: 14px;
+	height: 10px;
+
+	margin-left: 5px;
+}
+.row.headspace{
+	margin-top: 0;
+}
+.side-text span{
+	font-size: 5.5em;
+	line-height: 0.9;
+	font-family: 'flama_semibold', Arial;
+	text-transform: uppercase;
+}
+.side-text .span-inline{
+	display: inline;
+}
+.side-text .small-text{
+	font-family: 'flama_basic', Arial;
+	font-size: 1.7em;
+	margin-top: 20px;
+	display: block;
+	float:left;
+}
 .logo-bb{
 	background-image: url(BlenderBottle_Logo.svg);
 	background-repeat: no-repeat;
 	height: 100%;
+	text-transform: none;
 }
 .logo-gnc{
 	background-image: url(GNC_Logo.svg);
@@ -35,9 +203,33 @@ header .row div{
 }
 #map{
 	height: 60vh;
-	box-shadow: 0px 0px 50px #888;
+	background-color: #fff;
 }
 
 .gm-style-iw{
 	color: #333;
+}
+#gostak{
+	background-color: #fff;
+	color: #444;
+	padding: 100px 0;
+	margin-bottom: 0;
+}
+.text-content h3{
+	color: #444;
+	text-transform: uppercase;
+	border-bottom: 1px solid #9e9e9e;
+	padding-bottom: 12px;
+	margin-bottom: 18px;
+	font-size: 21px;
+	font-family: 'flamasemiconbold', Arial;
+	line-height: 1;
+}
+.text-content p{
+	line-height: 1.74;
+	margin: 0;
+	font-size: 15px;
+	font-family: 'flama_basic', Arial, Helvetica, sans-serif;
+	color: #3d3d3d;
+	margin-bottom: 20px;
 }
