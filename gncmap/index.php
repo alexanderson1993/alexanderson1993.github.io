@@ -1,3 +1,17 @@
+<?php
+function getIP() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) 
+    {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+}
+$xml = simplexml_load_file("http://www.geoplugin.net/xml.gp?ip=" . getIP());
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +77,7 @@
 				<div class="col-sm-5 text-content">
 				<h3>Take only what you need</h3>
 					<p>The GoStak jars are designed to be sleek and compact, giving you just enough room for your supplements, without invading your gym bag.</p>
-					<p>Heading out of town? Take a hadnful of 150cc jars filled with your post-workout supplements, and you've got an instant recovery shake for every day of the week.</p>
+					<p>Heading out of town? Take a handful of 150cc jars filled with your post-workout supplements, and you've got an instant recovery shake for every day of the week.</p>
 				</div>
 			</div>
 		</section>
@@ -78,8 +92,8 @@
 		</footer>
 	</div>
 	<script>
-		geoip_lat = 40.3641131; //<?php print $xml->geoplugin_latitude; ?>;
-		geoip_long = -111.7735594; //<?php print $xml->geoplugin_longitude; ?>;
+		geoip_lat = <?php print $xml->geoplugin_latitude; ?>;
+		geoip_long = <?php print $xml->geoplugin_longitude; ?>;
 	</script>
 	<script src="maps.js"></script>
 	<script src="locations.js"></script>

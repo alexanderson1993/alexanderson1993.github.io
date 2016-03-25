@@ -1,0 +1,3 @@
+[submodule "opals"]
+	path = opals
+	url = https://alexanderson1993@bitbucket.org/blenderbottle/opals.git
