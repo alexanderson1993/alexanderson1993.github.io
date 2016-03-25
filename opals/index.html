@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		body{
+			margin: 0;
+			padding: 0;
+		}
+		canvas{
+			width: 100vw;
+			height: 100vh;
+		}
+	</style>
+	<!--Lots of font files -->
+	<link href='http://fonts.googleapis.com/css?family=Dosis|Abel|Lato|Arvo|Trade+Winds|Codystar|Lora|Bad+Script|Vast+Shadow|Josefin+Sans:300|Allura|Lobster|Rationale|Alex+Brush|Anton|Shadows+Into+Light|Days+One|Monoton|Autour+One|Aclonica|Annie+Use+Your+Telescope|Bangers|Covered+By+Your+Grace|Indie+Flower|Orbitron|Rock+Salt|Alegreya|Black+Ops+One|Audiowide|Ewert|Chewy|UnifrakturMaguntia' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/main.css">
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link type="text/css" rel="stylesheet" href="css/flamafonts.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link href="css/scrollbars.css" rel="stylesheet" type="text/css" />
+	<link href="css/loading.css" rel="stylesheet" type="text/css" />
+	<link rel='stylesheet' href='css/spectrum.css' />¨
+	<!-- Load the Paper.js library --> 
+	<script type="text/javascript" src="paper-full.js"></script>
+	<script type="text/paperscript" canvas="myCanvas" src="main.js"></script>
+	<script src="js/jspdf.min.js"?></script>
+	<script src="js/svgToPdf.js"></script>
+</head>
+<body>
+	<div ng-app="designer" ng-controller="designer">
+		<div id="snapshotCover"></div>
+		<div id="canvas">
+			<canvas id="myCanvas" resize="true" keepalive="true"></canvas>
+		</div>
+		<div id="upperBackground"></div>
+		<div id="lowerBackground"></div>
+		<div id="designLogo"></div>
+		<div id="bottomButtons">
+			<div id="snapshot" ng-click="snapshot()"></div>
+			<!--<div class="rotateBottle"></div>-->
+			<div class="delete-button"></div>
+		</div>
+		<div id="feedback">
+			<div id="feedbackContent">
+				<p id="feedbackHeader">Tips & Tricks</p>
+				{{dict("tips-and-tricks")}}
+			</div>
+			<div id="feedbackButton">Tips & Tricks</div>
+		</div>
+		<div id="tutorialBack" class="hidden"></div>
+		<div id="tutorial" class="hidden">
+			<div id="videoSlide" class="hidden">
+				<video id="tutorialVideo" width="800" height="500" preload="auto"  controls>
+					<source src="https://s3.amazonaws.com/blenderbottle-dyobb/tutorial-videos/tutorialvideo.webm" type="video/webm" />
+					<source src="https://s3.amazonaws.com/blenderbottle-dyobb/tutorial-videos/tutorialvideo.mp4" type="video/mp4" />
+					<source src="https://s3.amazonaws.com/blenderbottle-dyobb/tutorial-videos/tutorialvideo.ogv" type="video/ogg" />
+					Your browser does not support the video tag.
+				</video>
+			</div>
+			<div id="slide1" class="">
+				<div id="colorChange"></div>
+				<div id="addtextChange"></div>
+				<div id="imagesChange"></div>
+
+				<div id="sidebarLeftTooltip"></div>
+				<div id="sidebarRightTooltip"></div>
+				<div id="snapshotTooltip"></div>
+				<button class="btn btn-primary" type='button'>START DESIGNING</button>
+				<div id="videoTooltip">
+				</div>
+
+			</div>
+			<div id="slide2"  class="hidden">
+				<div id="tooltipTextColor"></div>
+				<div id="tooltipTextAlign"></div>
+				<div id="tooltipMoveLayers"></div>
+				<div id="tooltipChooseFont"></div>
+				<div id="tooltipFinalButton"></div>
+
+			</div>
+			<div id="cover"></div>
+		</div>
+		<div id="sidebar-left">
+			<div id="bottleName" class="select">
+				<select class="title">
+					<option ng-repeat="productOptions in products" id="productOptions.id">{{productOptions.name}}</option>
+				</select>
+			</div>
+			<div id="sidebarControls">
+				<p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
+				<p id="filereader">File API & FileReader API not supported</p>
+				<p id="formdata">XHR2's FormData is not supported</p>
+				<p id="progress">XHR2's upload progress isn't supported</p>
+				<div id="bottleControls" ng-repeat="part in product.parts" ng-show="part == selectedPart">
+					<div class="leftArrow"></div>
+					<p class="controlslabel">{{part | caps}}</p>
+					<div class="rightArrow"></div>
+					<p class="controlsComment">Choose Your {{part | caps}} Color</p>
+					<div class="colorPicker">
+						<div class="colorPalette">
+							<ul class='classicColor'>
+								<li class='white' data-color="#ffffff"></li>
+								<li class='gray' data-color="#888888"></li>
+								<li class='black' data-color="#000000"></li>
+								<li class='cyan' data-color="#00A0C5"></li>
+								<li class='blue' data-color="#003CA6"></li>
+								<li class='purple' data-color="#4D2D7E"></li>
+								<li class='deeppink' data-color="#EC098C"></li>
+								<li class='red' data-color="#C2002F"></li>
+								<li class='orange' data-color="#ED7B2C"></li>
+								<li class='yellow' data-color="#009C4C"></li>
+								<li class='b8e81d selected' data-color="#b8e81d"></li>
+								<li class='eyedropper' data-color="eyedropper" data-controls="Color Picker" data-placement="bottom" data-toggle="tooltip" title="Color Picker"></li>
+							</ul>
+						</div>
+						<input type='text' class="spectrum" ng-init="loadSpectrum()" data-part="{{part}}" value="white" />
+					</div>
+				</div>
+				<div id="textControls" ng-show="'text' == selectedPart">
+					<div class="leftArrow"></div>
+					<p class="controlslabel">Text</p>
+					<div class="rightArrow"></div>
+					<p class="controlsComment">Add Your Personalized Text</p>
+					<input type="button" value="Add Text" ng-click="addText()">
+					<div id="textControlButtons" ng-show="selectedObject">
+						<div id="textControlsPicker">
+							<div ng-class="{'selected': textControl =='font'}"><a href="#" ng-click="textControl = 'font'" id="fontPick"  data-controls="FontControl" data-placement="bottom" data-toggle="tooltip" title="Font"> </a></div>
+							<div ng-class="{'selected': textControl =='color'}"><a href="#" ng-click="textControl = 'color'" id="colorPick" data-controls="colorControl" data-toggle="tooltip" data-placement="bottom" title="Color"> </a></div>
+							<div ng-class="{'selected': textControl =='align'}"><a href="#" ng-click="textControl = 'align'" id="alignPick" data-controls="alignControl" data-toggle="tooltip" data-placement="bottom" title="Alignment"> </a></div>
+							<div ng-class="{'selected': textControl =='layers'}"><a href="#" ng-click="textControl = 'layers'" id="layersPick" data-controls="layersControl" data-toggle="tooltip" data-placement="bottom" title="Layers"> </a></div>
+						</div>
+						<div id="colorControl" ng-show="textControl == 'color'">
+							<div class="colorPalette">
+								<ul class='textColor'>
+									<li class='white' data-color="#ffffff"></li>
+									<li class='black' data-color="#000000"></li>
+									<li class='gray' data-color="#888888"></li>
+									<li class='eyedropper' data-color="eyedropper" data-controls="Color Picker" data-placement="bottom" data-toggle="tooltip" title="Color Picker"></li>
+								</ul>
+							</div>
+							<input type='text' class="spectrum" id="fontColor" data-part="selectedText" value="black" />
+						</div>
+						<div id="FontControl" ng-show="textControl == 'font'">
+							<textarea id='textContent' ng-keyup="setText($event)">{{selectedObject.content}}</textarea>
+							<div id="textFont" class="scrollbar">
+								<p ng-repeat="font in fonts" ng-click="setFont(font.id)" id="{{font.id}}" data-font="{{font.name}}">{{font.name}}</p>
+							</div>
+						</div>
+						<div id="alignControl" ng-show="textControl =='align'">
+							<div ng-class="{'selected': selectedObject.justification == 'left'}"><a href="#" ng-click="selectedObject.setJustification('left')" class="alignLeft" data-controls="alignLeft" data-placement="bottom" data-toggle="tooltip" title="Align Left"></a></div>
+							<div ng-class="{'selected': selectedObject.justification == 'center'}"><a href="#" ng-click="selectedObject.setJustification('center')" class="alignCenter" data-controls="alignCenter" data-placement="bottom" data-toggle="tooltip" title="Align Center"></a></div>
+							<div ng-class="{'selected': selectedObject.justification == 'right'}"><a href="#" ng-click="selectedObject.setJustification('right')" class="alignRight" data-controls="alignRight" data-placement="bottom" data-toggle="tooltip" title="Align Right"></a></div>
+							<span class="hidden"><label class="lineHeightLabel">Line Height </label><input type="range" id='lineHeight' name='lineHeight' min='0' max='200'  oninput='changeLineHeight()'></span>
+						</div>
+						<div id="layersControl" ng-show="textControl == 'layers'">
+							<div><a href="#" ng-click="moveSelectedObject('back')" class="moveBack" data-controls="moveBack" data-placement="bottom" data-toggle="tooltip" title="Move Backward"></a></div>
+							<div><a href="#" ng-click="moveSelectedObject('toBack')" class="moveToBack" data-controls="moveToBack" data-placement="bottom" data-toggle="tooltip" title="Move To Back"></a></div>
+							<div><a href="#" ng-click="moveSelectedObject('toFront')" class="moveToFront" data-controls="moveToFront" data-placement="bottom" data-toggle="tooltip" title="Move To Front"></a></div>
+							<div><a href="#" ng-click="moveSelectedObject('front')" class="moveForward" data-controls="moveForward" data-placement="bottom" data-toggle="tooltip" title="Move Forward"></a></div>
+						</div>
+					</div>
+				</div>
+				<div id="imageControls" ng-show="'image' == selectedPart">
+					<div class="leftArrow"></div>
+					<p class="controlslabel">Artwork</p>
+					<div class="rightArrow"></div>
+					<p class="controlsComment">Upload and Design Your Artwork</p>
+					<input type="button" class="btn btn-info" id="fileSelect" value="Upload an Image"  data-placement="top" data-toggle="tooltip" title="By uploading this image you certify that you have rights to use this image commercially." ng-click="openFile()">
+					<p class='imageInfo' data-container="body" title="Our designer supports the use of .png, .jpg, and .gif. If you would like to create your own design using 3rd party software (such as Adobe Illustrator of Photoshop), we recommend exporting your final design as a PNG with transparency." data-toggle="tooltip" data-placement="top" data-content="Our designer supports the use of .png, .jpg, and .gif. If you would like to create your own design using 3rd party software (such as Adobe Illustrator of Photoshop), we recommend exporting your final design as a PNG with transparency.">What filetypes are supported?</p>
+					<div id="imageControlButtons" class="">
+						<div id="imageControlsPicker">
+							<div class="selected"><a href="#" id="artPick" data-controls="artControl" data-toggle="tooltip" data-placement="bottom" title="Pre-approved Artwork"> </a></div>
+							<div><a href="#" id="layersPick" class="hidden" data-controls="layersControl" data-toggle="tooltip" data-placement="bottom" title="Layers"> </a></div>
+							<div><a href="#" id="colorPick" class="hidden" data-controls="colorControl" data-toggle="tooltip" data-placement="bottom" title="Color"> </a></div>
+
+						</div>
+						<div id="artControl" class="">
+							<div id="artwork" class="scrollbar">
+								<ul>
+									
+									<li class="svg" data-art={{_id}}>{{svg}}</li>
+									
+									<li class="svg" data-art={{_id}}><img class="img-responsive" src={{imagesource}} /> </li>
+									
+								</ul>
+							</div>
+						</div>
+						<div id="colorControl" class="hidden">
+							<div class="colorPalette">
+								<ul class='imageColor'>
+									<li class='white' data-color="#ffffff"></li>
+									<li class='black' data-color="#000000"></li>
+									<li class='gray' data-color="#888888"></li>
+									<li class='eyedropper' data-color="eyedropper" data-controls="Color Picker" data-placement="bottom" data-toggle="tooltip" title="Color Picker"></li>
+								</ul>
+							</div>
+							<input type='text' id="imageColor" value="black" />
+						</div>
+						<div id="layersControl" class="hidden">
+							<div><a href="#" class="moveBack" data-controls="moveBack" data-placement="bottom" data-toggle="tooltip" title="Move Backward"></a></div>
+							<div><a href="#" class="moveToBack" data-controls="moveToBack" data-placement="bottom" data-toggle="tooltip" title="Move To Back"></a></div>
+							<div><a href="#" class="moveToFront" data-controls="moveToFront" data-placement="bottom" data-toggle="tooltip" title="Move To Front"></a></div>
+							<div><a href="#" class="moveForward" data-controls="moveForward" data-placement="bottom" data-toggle="tooltip" title="Move Forward"></a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="submission">
+				<button class='btn btn-primary' type="button" value="Save" onClick="saveImage(); setTimeout(function(){closeModal();},3000);" data-container="body" title="Design Saved" data-toggle="popover" data-placement="top" data-content="Your design will automatically be reloaded when you revisit this page.">SAVE</button>
+
+				<button type="button" id="resetPopover" class="btn btn-primary" data-container="body" title="Are you sure? This will erase your current design." data-toggle="popover" data-placement="top" data-content="<button class='btn btn-primary' onClick='closeModal()'>CANCEL</button><button class='btn btn-warning' onClick='resetCanvas();closeModal();'>RESET</button>">
+				RESET
+			</button>
+
+			<button class="btn btn-success submitImage" data-toggle="modal">SUBMIT</button>
+		</div>
+		<div id="mix-it-up">
+			<button class="btn action mix-it-up" data-container="body" title="<h4>Are you sure?</h4> Clicking this button automagically picks colors for every part of your bottle (awesome) but you will lose your current color selection (potentially not as awesome). Graphics and text will remain." data-trigger="manual" data-toggle="popover" data-placement="top" data-content="<button style='width:45%;' class='btn btn-primary col-xs-6' onClick='closeModal()'>NEVERMIND</button><button class='btn btn-primary mix-it-up' style='width:45%; margin-top:0;' onClick='Session.set(&quot;mixItUp&quot;,true);mixItUp();closeModal();'>LET'S DO THIS</button>">MIX IT UP</button>
+		</div>
+	</div>
+	<div id="sidebarNav">
+		<div id="sidebarButtons">
+			<p ng-repeat="part in product.parts" ng-class="partSelected(part)"><a ng-click="selectPart(part)" href="#" id="bottlePick" data-placement="right"  data-controls="bottleControls" data-toggle="tooltip" title="{{part | caps}} Color"> </a></p>
+			<p ng-class="partSelected('text')"><a href="#" ng-click="selectPart('text')"id="textPick" data-placement="right" data-controls="textControls" data-toggle="tooltip" title="Text"> </a></p>
+			<p ng-class="partSelected('image')"><a href="#" ng-click="selectPart('image')"id="imagePick" data-placement="right" data-controls="imageControls" data-toggle="tooltip" title="Images"> </a></p>
+		</div>
+	</div>
+	<div id='sidebar-right'>
+		<p id="descriptionHead">Design, vote, win!</p>
+		<div class="contestDescription">
+			{{selectedPart}}
+			{{currentRotation}}
+			{{dict("contest-description")}}
+		</div>
+	</div>
+	<input type="file" style="visibility:hidden;" size="20" id="imageUpload" class=" " onChange="previewfile(event.target.files[0])">
+	<div class="modal fade submitModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="padding:10px;">
+
+				<div class="row-fluid">
+					<p class="formHead">Submit Your Design</p>
+				</div>
+				<div class="row-fluid">
+					<img id="submitImage" width="400" src="" style="" />
+
+					<form role='form' style="" id="finishedForm" >
+
+						<div class="form-group">
+							<label for="name">Your Name:</label>
+							<div class="row">
+								<div class="col-sm-6">
+									<input type='text' class="form-control" id="firstName" name="EntryForm[firstName]" placeholder="First Name" onkeyup="checkForm();"/>
+								</div>
+								<div class="col-sm-6">
+									<input type='text' class="form-control" id="lastName" name="EntryForm[lastName]" placeholder="Last Name" onkeyup="checkForm();"/>
+
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email">Your Email:</label>
+							<div class="input-group">
+								<input type='email' id="email" name="EntryForm[email]"  class="form-control" placeholder="Enter Email" onkeyup="checkForm()"/>
+							</div>
+						</div>
+						<div class="form-group termsCheck">
+							<input type="checkbox" onchange="termsCheck(this)" name="EntryForm[termsCheckbox]" id="termsCheckbox" />
+							<label for="termsCheckbox">I have read and understood the Terms and Conditions</label>
+							<div class="terms">
+								{{dict("terms")}}
+							</div>
+						</div>
+						<button class="btn btn-primary submitEntry" type='button' disabled='disabled'>Submit</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade socialModal in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="padding:10px;">
+				<div class="row-fluid">
+					<p class="formHead">Success!</p>
+				</div>
+				<div class="row-fluid">
+					<h4 class="text-center">Your Design is Pending Approval.</h4>
+					<p class="shareInfo">We'll shoot you an email once your design is posted to the contest page on Facebook. You can still share your entry with your friends and have them start voting on it. Also, <a href="http://blenderbottle.com/dyobb-vote" target="_blank">check out the other entries</a> and share this app with your friends!</p>
+					<p class="text-center" style="margin-top:10px;"><strong style="font-weight: 800">Share using #dyobb15</strong></p>
+					<div class="share-buttons row">
+						<a class="btn-sm btn shareit-facebook-colors" target="_blank" onClick="ga('send', 'event', { eventCategory: 'Submission', eventAction: 'Facebook Share'});" href="https://www.facebook.com/sharer/sharer.php?u={{entryUrl}}#vote" style="margin-left:3%; width: 46%;">
+							<i class="fa fa-facebook"></i> Share on Facebook
+						</a>
+						<a class="btn-sm btn tw-share shareit-twitter-colors" onClick="ga('send', 'event', { eventCategory: 'Submission', eventAction: 'Twitter Share'});" style="width: 46%; margin-left: 2%" target="_blank" href="https://twitter.com/intent/tweet?url={{entryUrl}}#vote&amp;text=Vote for my custom BlenderBottle®! #dyobb15">
+							<i class="fa fa-twitter"></i> Share on Twitter
+						</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade errorModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="padding:10px;">
+				<div class="row-fluid">
+					<p class="formHead">Submission Error</p>
+				</div>
+				<div class="row-fluid">
+					<p class="shareInfo">There was an error with your submission. Please try again.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade unclean" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="padding:10px;">
+				<div class="row-fluid">
+					<p class="formHead">Whoops! Something's not right here.</p>
+				</div>
+				<div class="row-fluid">
+					<p class="shareInfo">That doesn't look like something that should be printed on a BlenderBottle&#174;. Take a second pass at your design to remove any crude, vulgar, or pornographic material and you should be set.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade imageModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" width="500" style="width: 500px; padding:10px;">
+				<div class="row-fluid">
+					<p class="formHead">Snapshot</p>
+				</div>
+				<div class="row-fluid">
+					<img id="snapshotImage" width="400" src="data:image/svg+xml;{{previewImageSVG}}" style="margin-bottom: 15px;" />
+					<a class="btn btn-primary" id="snapshotDownload" type='button' href='{{previewImageSource}}' target="_blank" download='snapshot.png'>Download Snapshot</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade loadingModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" width="400" style="width: 400px; padding:10px;">
+				<div class="row-fluid">
+					<div class="pace pace-active">
+						<div class="pace-activity"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<a class="hidden raptorize"></a>
+<script src='js/angular.min.js'></script>
+<script src="js/angular-sanitize.js"></script>
+<script src='js/angularControl.js'></script>
+<script src='js/jquery-2.2.1.min.js'></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrapcontrol.js"></script>
+<script src='js/spectrum.js'></script>
+<script src="js/spectrumControl.js"></script>
+<script src="js/fileReader.js"></script>
+<script src="js/jquery.mousewheel.js"></script>
+<script src="js/jquery.jscrollpane.min.js"></script>
+<script src="js/underscore.js"></script>
+</body>
+</html>
