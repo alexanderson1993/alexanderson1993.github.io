@@ -58,7 +58,7 @@ function animLoop (render, element){
 var scrollSpeed = 0.075, currentScroll = -500;
 animLoop(function(deltaT){
     currentScroll += (deltaT * scrollSpeed);
-    if (currentScroll >= document.height-5)
+    if (currentScroll >= document.body.clientHeight-5)
         currentScroll = -100;
     if (currentScroll < -100)
         currentScroll = -100;
