@@ -10,22 +10,291 @@ app.controller('designer', ['$scope', '$rootScope', '$timeout', '$http', functio
 		name:'28oz SportMixer Grip',
 		id:'gripColor',
 		parts:[
-		'bottle',
-		'lid',
-		'cap',
-		'grip'
+		{
+			name:'bottle',
+			colors:[
+			{
+				paletteColor: 'white',
+				isBlack:true,
+				partColors: {
+					cap:'#fff',
+					lid:'#222',
+					bottle:'#222',
+					grip:'#222'
+				}
+			},
+			{
+				paletteColor: '#333',
+				isBlack:true,
+				partColors: {
+					cap:'#222',
+					lid:'#222',
+					bottle:'#222',
+					grip:'#222'
+				}
+			},
+			{
+				paletteColor: 'red',
+				isBlack:true,
+				partColors: {
+					cap:'#ff0000',
+					lid:'#222',
+					bottle:'#222',
+					grip:'#222'
+				}
+			},
+			{
+				paletteColor: 'blue',
+				isBlack:true,
+				partColors: {
+					cap:'#0033ff',
+					lid:'#222',
+					bottle:'#222',
+					grip:'#222'
+				}
+			},
+			{
+				paletteColor: '#b8e81d;',
+				isBlack:true,
+				partColors: {
+					cap:'#b8e81d',
+					lid:'#222',
+					bottle:'#222',
+					grip:'#222'
+				}
+			},
+			{
+				paletteColor: 'orange',
+				partColors: {
+					cap:'white',
+					lid:'orange',
+					bottle:'orange',
+					grip:'orange'
+				}
+			},
+			{
+				paletteColor: 'cyan',
+				partColors: {
+					cap:'white',
+					lid:'cyan',
+					bottle:'cyan',
+					grip:'cyan'
+				}
+			},
+			{
+				paletteColor: 'blue',
+				partColors: {
+					cap:'white',
+					lid:'blue',
+					bottle:'blue',
+					grip:'blue'
+				}
+			},
+			{
+				paletteColor: 'deeppink',
+				partColors: {
+					cap:'white',
+					lid:'deeppink',
+					bottle:'deeppink',
+					grip:'deeppink'
+				}
+			},
+			{
+				paletteColor: 'red',
+				partColors: {
+					cap:'white',
+					lid:'red',
+					bottle:'red',
+					grip:'red'
+				}
+			},
+			{
+				paletteColor: 'purple',
+				partColors: {
+					cap:'white',
+					lid:'purple',
+					bottle:'purple',
+					grip:'purple'
+				}
+			},
+			{
+				paletteColor: '#b8e81d',
+				selected:true,
+				partColors: {
+					cap:'white',
+					lid:'#b8e81d',
+					bottle:'#b8e81d',
+					grip:'#b8e81d'
+				}
+			},
+			]
+		}
 		]
 	}];
-	$scope.product = {
-		name:'28oz SportMixer Grip',
-		id:'gripColor',
-		parts:[
-		'bottle',
-		'lid',
-		'cap',
-		'grip'
-		]
+	$scope.product = $scope.products[0];
+	$scope.textControl = 'font';
+	$scope.selectedPart = $scope.product.parts[0].name;
+	$scope.setColor = function(color,part){
+		for (var prop in color.partColors){
+			PaperItems[$scope.product.id]._namedChildren[prop].forEach(function(e){
+				e.setFillColor(color.partColors[prop]);
+			});
+		}
+		part.colors.forEach(function(e){
+			e.selected = false;
+		});
+		paper.view.draw();
+		color.selected = true;
+	}
+	$scope.partSelected = function(part){
+		if (part === $scope.selectedPart){
+			return 'selected';
+		}
 	};
+	$scope.selectPart = function(part){
+		$scope.selectedPart = part;
+	};
+	$scope.dict = function(key){
+		return dictionary[key];
+	};
+	$scope.loadSpectrum = function(){
+		var self = this;
+		$(".spectrum").each(function(e){
+			$(this).spectrum({
+				clickoutFiresChange: true,
+				showButtons: false,
+				showPalette: false,
+				flat: true,
+				showSelectionPalette: false,
+				palette: [
+				['black', 'cyan', 'blue'],
+				['lime', 'orange', 'deeppink'],
+				['red', 'purple', 'white']
+				],
+				move: function (color) {
+					colorValue = blacktitude(color.toHexString());
+					if (this.dataset.part == 'selectedText'){
+						if ($scope.selectedObject){
+							$scope.selectedObject.setFillColor(colorValue);
+						}
+					} else {
+						PaperItems[$scope.product.id]._namedChildren[this.dataset.part].forEach(function(e){
+							e.setFillColor(colorValue);
+						});
+					}
+					paper.view.draw();	
+				},
+			});
+		});
+	};
+	$scope.addText = function(){
+		PaperLayers.content.activate();
+		var obj = new paper.PointText({
+			point:[0,50],
+			content:'Text',
+			fontSize:30,
+			name:"PaperText"
+		});
+		obj.name = "PaperText";
+		PaperText.push(obj);
+		PaperText[PaperText.length-1].position = paper.view.bounds.center;
+		$scope.textControl = 'font';
+		$scope.selectedObject = PaperText[PaperText.length - 1];
+		PaperFunctions.createBoundingBox($scope.selectedObject.bounds);
+	};
+	$scope.setFont = function(fontName){
+		if ($scope.selectedObject){
+			$scope.selectedObject.fontFamily = fontName;
+		}
+		PaperFunctions.updateBoundingBox($scope.selectedObject.bounds);
+	};
+	$scope.setText = function(event){
+		$scope.selectedObject.setContent(event.target.value);
+		PaperFunctions.updateBoundingBox($scope.selectedObject.bounds);
+	};
+	$scope.openFile = function(){
+		$('#imageUpload').show();
+		$('#imageUpload').focus();
+		$('#imageUpload').click();
+		$('#imageUpload').hide();
+	};
+	$scope.accessFile = function(event){
+		previewFile(event.target.files[0]);
+	};
+	$scope.moveSelectedObject = function(direction){
+		switch(direction){
+			case 'back':
+
+			break;
+			case 'toBack':
+			$scope.selectedObject.moveBelow(PaperText[0]);
+			break;
+			case 'toFront':
+			$scope.selectedObject.moveAbove(PaperText[PaperText.length - 1]);
+			break;
+			case 'front':
+			break;
+		}
+		paper.view.draw();
+	};
+	$scope.snapshot = function(){
+		$('#snapshotCover').addClass('click');
+		setTimeout(function(){
+			$('#snapshotCover').addClass('fade');
+		},10);
+		setTimeout(function(){
+			$('#snapshotCover').removeClass('fade');
+			$('#snapshotCover').removeClass('click');
+			//$('.imageModal').modal();
+		},300);
+		$scope.previewImageSource = $('#myCanvas')[0].toDataURL();
+	};
+	$scope.submit = function(){
+		var a = new Date();
+		var exportActivate = PaperLayers.export.activate();
+		var overlay = new paper.Symbol(PaperLayers.overlay.clone());
+		var product = new paper.Symbol(PaperLayers.product.clone());
+		//Crop the content
+		var raster = PaperLayers.content.rasterize(300);
+		var image = new Image();
+		var canvas = document.createElement('canvas');
+		image.src = raster.toDataURL();
+		raster.remove();
+		canvas.width = 2000;
+		canvas.height = 1000;
+		canvas.getContext('2d').drawImage(image,((PaperLayers.content.bounds.left - 170)*300/72),((PaperLayers.content.bounds.top - 330)*300/72));
+		var data = canvas.toDataURL();
+		data = data.replace(/^data:image\/png;base64,/, "");
+		for (var i = PaperLayers.export.children.length - 1; i >= 0; i--){
+			PaperLayers.export.children[i].remove();
+		}
+		PaperLayers.template.activate();
+		setTimeout(function(){
+			overlay.place(PaperLayers.overlay.bounds.center);
+			product.place(PaperLayers.product.bounds.center);
+			var raster = new paper.Raster({
+				source: canvas.toDataURL(),
+				position: PaperLayers.content.bounds.center
+			});
+			raster.scale(0.24);
+			raster.position.set(410,450);
+			var data2 = PaperLayers.template.rasterize(300).toDataURL();
+			data2 = data2.replace(/^data:image\/png;base64,/, "");
+			var blob = new Blob([data], {type : 'image/png'});
+			var blob2 = new Blob([data2],{type: 'image/png'});
+			var formData = new FormData();
+			formData.append("logo", blob);
+			formData.append("template",blob2);
+			var request = new XMLHttpRequest();
+			request.open("POST", "http://52.22.232.108:8081/api/svg");
+			request.send(formData);
+			for (var i = PaperLayers.template.children.length - 1; i >= 0; i--){
+				PaperLayers.template.children[i].remove();
+			}
+			console.log('Rasterize time:', new Date() - a);
+		},1000)
+	}
+	$timeout($scope.loadSpectrum);
 	$scope.fonts = [
 	{
 		id:'Arial',
@@ -216,139 +485,6 @@ app.controller('designer', ['$scope', '$rootScope', '$timeout', '$http', functio
 		name:'Vast Shadow'
 	}
 	];
-	$scope.textControl = 'font';
-	$scope.selectedPart = $scope.product.parts[0];
-	$scope.partSelected = function(part){
-		if (part === $scope.selectedPart){
-			return 'selected';
-		}
-	}
-	$scope.selectPart = function(part){
-		$scope.selectedPart = part;
-	}
-	$scope.dict = function(key){
-		return dictionary[key];
-	}
-	$scope.loadSpectrum = function(){
-		var self = this;
-		$(".spectrum").each(function(e){
-			$(this).spectrum({
-				clickoutFiresChange: true,
-				showButtons: false,
-				showPalette: false,
-				flat: true,
-				showSelectionPalette: false,
-				palette: [
-				['black', 'cyan', 'blue'],
-				['lime', 'orange', 'deeppink'],
-				['red', 'purple', 'white']
-				],
-				move: function (color) {
-					colorValue = blacktitude(color.toHexString());
-					if (this.dataset.part == 'selectedText'){
-						if ($scope.selectedObject){
-							$scope.selectedObject.setFillColor(colorValue);
-						}
-					} else {
-						PaperItems[$scope.product.id]._namedChildren[this.dataset.part].forEach(function(e){
-							e.setFillColor(colorValue);
-						});
-					}
-					
-				},
-				change: function (color) {
-					colorValue = blacktitude(color.toHexString());
-					if (this.dataset.part == 'selectedText'){
-						if ($scope.selectedObject){
-							$scope.selectedObject.setFillColor(colorValue);
-						}
-					} else {
-						PaperItems[$scope.product.id]._namedChildren[this.dataset.part].forEach(function(e){
-							e.setFillColor(colorValue);
-						});
-					}		
-				}
-			});
-		});
-	};
-	$scope.addText = function(){
-		PaperLayers.text.activate();
-		var obj = new paper.PointText({
-			point:[50,50],
-			content:'This is my point text',
-			fontSize:30
-		})
-		PaperText.push(obj);
-		PaperText[PaperText.length-1].bounds.setCenter(innerWidth/2, innerHeight/2);
-		$scope.textControl = 'font';
-		$scope.selectedObject = PaperText[PaperText.length-1]
-		PaperFunctions.createBoundingBox($scope.selectedObject.bounds);
-		paper.view.draw()
-	};
-	$scope.setFont = function(fontName){
-		if ($scope.selectedObject){
-			$scope.selectedObject.fontFamily = fontName;
-		}
-		paper.view.draw()
-	};
-	$scope.setText = function(event){
-		$scope.selectedObject.setContent(event.target.value);
-		paper.view.draw()
-	};
-	$scope.openFile = function(){
-		$('#imageUpload').show();
-		$('#imageUpload').focus();
-		$('#imageUpload').click();
-		$('#imageUpload').hide();
-	}
-	$scope.accessFile = function(event){
-		previewFile(event.target.files[0]);
-	}
-	$scope.moveSelectedObject = function(direction){
-		debugger;
-		switch(direction){
-			case 'back':
-
-			break;
-			case 'toBack':
-			$scope.selectedObject.moveBelow(PaperText[0]);
-			break;
-			case 'toFront':
-			$scope.selectedObject.moveAbove(PaperText[PaperText.length - 1]);
-			break;
-			case 'front':
-			break;
-
-		}
-		paper.view.draw()
-	}
-	$scope.snapshot = function(){
-		$('#snapshotCover').addClass('click');
-		setTimeout(function(){
-			$('#snapshotCover').addClass('fade');
-		},10);
-		setTimeout(function(){
-			$('#snapshotCover').removeClass('fade');
-			$('#snapshotCover').removeClass('click');
-			//$('.imageModal').modal();
-		},300);
-		$scope.previewImageSource = $('#myCanvas')[0].toDataURL();
-		$scope.previewImageSVG = project.exportSVG({asString:true});
-		//Create the DOM element, add the SVG to it, and turn it into a blob
-		var dom = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', null);
-		var body = dom.createElement('body');
-		body.appendChild(project.exportSVG());
-		var sXML = new XMLSerializer().serializeToString(body);
-		var blob = new Blob([sXML], {type : 'text/html'});
-		var formData = new FormData();
-		formData.append("html", blob);
-		var request = new XMLHttpRequest();
-		request.open("POST", "http://localhost:8081/api/svg");
-		request.send(formData);
-
-	}
-	
-	$timeout($scope.loadSpectrum)
 }]);
 
 

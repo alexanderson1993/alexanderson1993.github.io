@@ -1,9 +1,11 @@
 window.PaperLayers = {
-	overlay: new Layer({name:'overlay',visible:true}),
+	background: new Layer({name:'background'}),
+	export: new Layer({name:'export'}),
+	template: new Layer({name:'template'}),
 	product:new Layer({name:'product'}),
-	text: new Layer({name:'text'}),
-	images: new Layer({name:'images'}),
-	bound: new Layer({name:'bound'})
+	content: new Layer({name:'contentf'}),
+	overlay: new Layer({name:'overlay',visible:true}),
+	bound: new Layer({name:'bound'}),
 };
 window.PaperItems = {};
 window.PaperBounds = {};
@@ -13,26 +15,60 @@ window.project = this.project;
 
 var rotating = false;
 var scaling = false;
-
+var trash,rotate,scale;
 var scope = angular.element(document.querySelector('[ng-controller="designer"]')).scope();
-PaperLayers.product.activate();
-var controlBack = new Path.Rectangle(new Rectangle(0,0,1000,1000));
-controlBack.fillColor = '#fff';
-controlBack.opacity = 0;
-controlBack.bounds.setCenter(window.innerWidth/2,window.innerHeight/2.2);
+var backgroundRect = function(){
+	var controlBack = new Path.Rectangle(new Rectangle(0,0,1000,1000));
+	controlBack.fillColor = '#000';
+	controlBack.opacity = 0;
+	controlBack.bounds.setCenter(paper.view.bounds.center);
+};
+project.view.resolution = 300;
+PaperLayers.background.activate();
+backgroundRect();
 PaperLayers.product.importSVG('GripColor.svg',function(a,b,c){
-	PaperLayers.product.activate();
 	PaperItems.gripColor = a;
+	PaperLayers.product.addChild(a);
 	PaperItems.gripColor.scale(.21);
-	PaperItems.gripColor.bounds.setCenter(view.center);
+	PaperItems.gripColor.position.setX(PaperItems.gripColor.bounds.width/2 + 265);
+	PaperItems.gripColor.position.setY(PaperItems.gripColor.bounds.height/2);
+	//PaperItems.gripColor.bounds.setCenter(view.center);
+});
+PaperLayers.product.importSVG('GripOutline.svg',function(a,b,c){
+	PaperItems.gripOutline = a;
+	PaperLayers.product.addChild(a);
+	PaperItems.gripOutline.scale(.21);
+	PaperItems.gripOutline.position.setX(PaperItems.gripOutline.bounds.width/2 + 265);
+	PaperItems.gripOutline.position.setY(PaperItems.gripOutline.bounds.height/2);
+		//PaperItems.gripOutline.bounds.setCenter(view.center + new Point(2,31));
+	});
+PaperLayers.overlay.importSVG('GripTemplate.svg',function(a,b,c){
+	PaperItems.gripTemplate = a;
+	PaperLayers.overlay.addChild(a);
+	PaperItems.gripTemplate.scale(.21);
+	PaperItems.gripTemplate.position.setX(PaperItems.gripTemplate.bounds.width/2);
+	PaperItems.gripTemplate.position.setY(PaperItems.gripTemplate.bounds.height/2);
+	//PaperItems.gripOutline.bounds.setCenter(view.center + new Point(2,31));
+});
+PaperLayers.bound.importSVG('svg/rotate.svg',function(a,b,c){
+	PaperLayers.bound.activate();
+	a.name = 'rotate';
+	rotate = new Symbol(a);
+});
+PaperLayers.bound.importSVG('svg/move.svg',function(a,b,c){
+	PaperLayers.bound.activate();
+	a.name = 'scale';
+	scale = new Symbol(a);
+});
+PaperLayers.bound.importSVG('svg/trash.svg',function(a,b,c){
+	PaperLayers.bound.activate();
+	a.name = 'trash';
+	trash = new Symbol(a);
 });
 PaperLayers.overlay.activate();
-PaperLayers.overlay.importSVG('GripOutline.svg',function(a,b,c){
-	PaperLayers.overlay.activate();
-	PaperItems.gripOutline = a;
-	PaperItems.gripOutline.scale(.21);
-	PaperItems.gripOutline.bounds.setCenter(view.center + new Point(2,31));
-});
+var boundsRect = new Rectangle(new Point(170, 330), new Point(650, 570));
+var bounds = new Path.Rectangle(boundsRect);
+bounds.strokeColor = '#ff0000';
 
 var PaperSelectedObject, dragObject, path;
 var movePath = false;
@@ -44,7 +80,7 @@ var hitOptions = {
 };
 function onMouseDown(event) {
 	PaperSelectedObject = path = null;
-	if (event.item.className == 'PointText' || event.item.className == 'Raster') {
+	if (event.item.name == 'PaperText' || event.item.className == 'Raster' || event.item.name == 'import') {
 		PaperSelectedObject = event.item;
 		scope.$apply(function(){
 			scope.textControl = 'font';
@@ -52,7 +88,6 @@ function onMouseDown(event) {
 			PaperFunctions.createBoundingBox(event.item.bounds);
 		});
 	} else if (event.item.name == 'rotate' || event.item.name == 'scale'){
-
 	} else {
 		if (event.item.name == 'trash'){
 			scope.selectedObject.remove();
@@ -101,7 +136,7 @@ function onMouseDrag(event) {
 				dragObject.position += event.delta;
 				PaperLayers.bound.position += event.delta;
 			} else {
-				if (event.item.className === 'PointText' || event.item.className == 'Raster'){
+				if (event.item.className === 'PointText' || event.item.className == 'Raster' || event.item.name == 'import'){
 					dragObject = event.item;
 				}
 			}
@@ -110,7 +145,7 @@ function onMouseDrag(event) {
 	paper.view.draw();
 }
 
-PaperFunctions.updateBoundingBox = function(bounds,rotation){
+PaperFunctions.updateBoundingBox = function(bounds){
 	//Remove the original bounds path and replace it with the updated one.
 	for (var i = PaperLayers.bound.children.length - 1; i >= 0; i--){
 		if (PaperLayers.bound.children[i].name == 'BoundPath'){
@@ -190,36 +225,16 @@ PaperFunctions.createBoundingBox = function(bounds,rotation){
 
 	boundPath.add(new Point(bounds.getTopRight() + 		new Point(padding,-1 * padding)));
 
-	PaperLayers.bound.importSVG('svg/rotate.svg',function(a,b,c){
-		PaperLayers.bound.activate();
-		PaperBounds.rotate = a;
-		PaperBounds.rotate.name = 'rotate';
-		PaperBounds.rotate.position.set(bounds.getTopRight().x + padding/2,bounds.getTopRight().y - padding/2);
-		svgLoads --;
-	});
-	PaperLayers.bound.importSVG('svg/move.svg',function(a,b,c){
-		PaperLayers.bound.activate();
-		PaperBounds.scale = a;
-		PaperBounds.scale.name = 'scale';
-		PaperBounds.scale.position.set(bounds.getBottomRight().x + padding/2,bounds.getBottomRight().y + padding/2);
-		svgLoads --;
-	});
-	PaperLayers.bound.importSVG('svg/trash.svg',function(a,b,c){
-		PaperLayers.bound.activate();
-		PaperBounds.trash = a;
-		PaperBounds.trash.name = 'trash';
-		PaperBounds.trash.position.set(bounds.getBottomLeft().x - padding/2,bounds.getBottomLeft().y + padding/2);
-		svgLoads --;
-	});
-	/*PaperLayers.bound.importSVG('svg/rotate.svg',function(a,b,c){
-		PaperLayers.bound.activate();
-		PaperBounds.rotate = a;
-		PaperBounds.rotate.name = 'rotate';
-		PaperBounds.rotate.position.set(bounds.getTopRight().x + padding/2,bounds.getTopRight().y - padding/2);
-	});*/
-
-}
-
+	PaperBounds.rotate = rotate.place(new Point(bounds.getTopRight().x + padding/2,bounds.getTopRight().y - padding/2));
+	PaperBounds.rotate.name = 'rotate';
+	PaperBounds.scale = scale.place(new Point(bounds.getBottomRight().x + padding/2,bounds.getBottomRight().y + padding/2));
+	PaperBounds.scale.name = 'scale';
+	PaperBounds.trash = trash.place(new Point(bounds.getBottomLeft().x - padding/2,bounds.getBottomLeft().y + padding/2));
+	PaperBounds.trash.name = 'trash';
+};
+/*function onFrame(event) {
+	paper.view.draw();
+}*/
 function radToDeg(rad){
 	return rad * 180 / Math.PI;
 }

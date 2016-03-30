@@ -1066,10 +1066,9 @@ p.selected {
   width: 200px;
   margin: 0 auto;
 }
-.colorPicker{
-  margin-top: 30px;
-}
+
 .colorPalette {
+  padding-top:30px;
   width: 200px;
 }
 
@@ -1112,7 +1111,7 @@ p.selected {
   width: 0;
   position: absolute;
   left: 6px;
-  top: 37%;
+  top: -25px;
   margin-top: -8px;
 }
 
@@ -1125,7 +1124,7 @@ p.selected {
   border-width: 0 2px 2px 0;
   position: absolute;
   left: 16px;
-  top: 31%;
+  top: -27px;
   margin-top: 0px;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -1133,53 +1132,17 @@ p.selected {
   -o-transform: rotate(45deg);
 }
 
-.colorPalette .white {
-  background-color: #fff;
+.colorPalette li{
+ border-right: solid 39px transparent;
+ border-top: solid 40px transparent;
+ width: 0px;
+ height: 0px;
+ box-sizing: content-box;
+}
+.colorPalette .colorBlack{
+    border-right: solid 39px #222;
 }
 
-.colorPalette .black {
-  background-color: #333;
-}
-
-.colorPalette .cyan {
-  background-color: #00A0C5;
-}
-
-.colorPalette .blue {
-  background-color: #003CA6;
-}
-
-.colorPalette .purple {
-  background-color: #4D2D7E;
-}
-
-.colorPalette .deeppink {
-  background-color: #EC098C;
-}
-
-.colorPalette .red {
-  background-color: #c2002f;
-}
-
-.colorPalette .orange {
-  background-color: #ED7B2C;
-}
-
-.colorPalette .yellow {
-  background-color: #009C4C;
-}
-
-.colorPalette .b8e81d {
-  background-color: #b8e81d;
-}
-
-.colorPalette .brown {
-  background-color: brown;
-}
-
-.colorPalette .gray {
-  background-color: gray;
-}
 .colorPalette .eyedropper{
   background-color: #b8e81d;
   background-image: url('../svg/eyedropper.svg');
@@ -1561,7 +1524,7 @@ div.modal.fade.submitModal{
  * Select
  */
 
-.select {
+ .select {
   position: relative;
 }
 .select select {
@@ -1575,8 +1538,8 @@ div.modal.fade.submitModal{
   cursor: pointer;
   outline: 0;
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 /* Undo the Firefox inner focus ring */
 .select select:focus:-moz-focusring {
