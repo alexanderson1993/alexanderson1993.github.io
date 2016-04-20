@@ -51,6 +51,9 @@
 			</div>
 			<div id="feedbackButton">Tips & Tricks</div>
 		</div>
+		<div ng-if="!loaded" class="loadingHolder">
+			<div class="loading"><span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span></div>
+		</div>
 		<div id="tutorialBack" class="hidden"></div>
 		<div id="tutorial" class="hidden">
 			<div id="videoSlide" class="hidden">
@@ -207,7 +210,7 @@
 					RESET
 				</button>
 
-				<button class="btn btn-success submitImage" ng-click="submit()" data-toggle="modal">SUBMIT</button>
+				<button class="btn btn-success submitImage" ng-click="loadPreview()" data-toggle="modal">SUBMIT</button>
 			</div>
 			<div id="mix-it-up">
 				<!--<button class="btn action mix-it-up" data-container="body" title="<h4>Are you sure?</h4> Clicking this button automagically picks colors for every part of your bottle (awesome) but you will lose your current color selection (potentially not as awesome). Graphics and text will remain." data-trigger="manual" data-toggle="popover" data-placement="top" data-content="<button style='width:45%;' class='btn btn-primary col-xs-6' onClick='closeModal()'>NEVERMIND</button><button class='btn btn-primary mix-it-up' style='width:45%; margin-top:0;' onClick='Session.set(&quot;mixItUp&quot;,true);mixItUp();closeModal();'>LET'S DO THIS</button>">MIX IT UP</button>-->
@@ -237,7 +240,7 @@
 						<p class="formHead">Submit Your Design</p>
 					</div>
 					<div class="row-fluid">
-						<img id="submitImage" width="400" src="" style="" />
+						<img id="submitImage" width="400" src="{{previewImageSource}}" style="" />
 
 						<form role='form' style="" id="finishedForm" >
 

@@ -145,7 +145,7 @@ app.controller('designer', ['$scope', '$rootScope', '$timeout', '$http', functio
 		});
 		paper.view.draw();
 		color.selected = true;
-	}
+	};
 	$scope.partSelected = function(part){
 		if (part === $scope.selectedPart){
 			return 'selected';
@@ -249,51 +249,74 @@ app.controller('designer', ['$scope', '$rootScope', '$timeout', '$http', functio
 		},300);
 		$scope.previewImageSource = $('#myCanvas')[0].toDataURL();
 	};
-	$scope.submit = function(){
+	function runSubmit(upload){
 		var a = new Date();
 		var exportActivate = PaperLayers.export.activate();
 		var overlay = new paper.Symbol(PaperLayers.overlay.clone());
 		var product = new paper.Symbol(PaperLayers.product.clone());
 		//Crop the content
-		var raster = PaperLayers.content.rasterize(300);
+		var raster = PaperLayers.content.rasterize(30);
+		var logo = PaperLayers.content.rasterize(300);
 		var image = new Image();
 		var canvas = document.createElement('canvas');
-		image.src = raster.toDataURL();
-		raster.remove();
-		canvas.width = 2000;
-		canvas.height = 1000;
-		canvas.getContext('2d').drawImage(image,((PaperLayers.content.bounds.left - 170)*300/72),((PaperLayers.content.bounds.top - 330)*300/72));
-		var data = canvas.toDataURL();
-		data = data.replace(/^data:image\/png;base64,/, "");
-		for (var i = PaperLayers.export.children.length - 1; i >= 0; i--){
-			PaperLayers.export.children[i].remove();
-		}
-		PaperLayers.template.activate();
+		image.src = logo.toDataURL();
+		//The timeouts are to ensure that the functions are actually completing before going to the next step;
+		//They aren't entirely synchronous.
 		setTimeout(function(){
-			overlay.place(PaperLayers.overlay.bounds.center);
-			product.place(PaperLayers.product.bounds.center);
-			var raster = new paper.Raster({
-				source: canvas.toDataURL(),
-				position: PaperLayers.content.bounds.center
-			});
-			raster.scale(0.24);
-			raster.position.set(410,450);
-			var data2 = PaperLayers.template.rasterize(300).toDataURL();
-			data2 = data2.replace(/^data:image\/png;base64,/, "");
-			var blob = new Blob([data], {type : 'image/png'});
-			var blob2 = new Blob([data2],{type: 'image/png'});
-			var formData = new FormData();
-			formData.append("logo", blob);
-			formData.append("template",blob2);
-			var request = new XMLHttpRequest();
-			request.open("POST", "http://52.22.232.108:8081/api/svg");
-			request.send(formData);
-			for (var i = PaperLayers.template.children.length - 1; i >= 0; i--){
-				PaperLayers.template.children[i].remove();
-			}
-			console.log('Rasterize time:', new Date() - a);
-		},1000)
+			raster.remove();
+			logo.remove();
+			canvas.width = 2000;
+			canvas.height = 1000;
+			canvas.getContext('2d').drawImage(image,((PaperLayers.content.bounds.left - 170)*300/72),((PaperLayers.content.bounds.top - 330)*300/72));
+			var data = canvas.toDataURL();
+			data = data.replace(/^data:image\/png;base64,/, "");
+			setTimeout(function(){
+				for (var i = PaperLayers.export.children.length - 1; i >= 0; i--){
+					PaperLayers.export.children[i].remove();
+				}
+				PaperLayers.template.activate();
+				setTimeout(function(){
+					overlay.place(PaperLayers.overlay.bounds.center);
+					product.place(PaperLayers.product.bounds.center);
+					var raster = new paper.Raster({
+						source: canvas.toDataURL(),
+						position: PaperLayers.content.bounds.center
+					});
+					raster.scale(0.24);
+					raster.position.set(410,450);
+					setTimeout(function(){
+						var data2 = PaperLayers.template.rasterize(300).toDataURL();
+						$scope.previewImageSource = PaperLayers.template.rasterize(72).toDataURL();
+						data2 = data2.replace(/^data:image\/png;base64,/, "");
+						var blob = new Blob([data], {type : 'image/png'});
+						var blob2 = new Blob([data2],{type: 'image/png'});
+						if (upload){
+							var formData = new FormData();
+							formData.append("logo", blob);
+							formData.append("template",blob2);
+							var request = new XMLHttpRequest();
+							request.open("POST", "http://localhost:8081/api/svg");
+							console.log(formData, blob, blob2, data2.length, data.length);
+							request.send(formData);
+						} else {
+							//Open up the preview modal
+							$('.submitModal').modal();
+						}
+						for (var i = PaperLayers.template.children.length - 1; i >= 0; i--){
+							PaperLayers.template.children[i].remove();
+						}
+						console.log('Rasterize time:', new Date() - a);
+					},500);
+				},500);
+			},500);
+		},500);
 	}
+	$scope.loadPreview = function(){
+		runSubmit(false);
+	};
+	$scope.submit = function(){
+		runSubmit(true);
+	};
 	$timeout($scope.loadSpectrum);
 	$scope.fonts = [
 	{

@@ -15,6 +15,8 @@ window.project = this.project;
 
 var rotating = false;
 var scaling = false;
+var startBounds;
+var startRotation;
 var trash,rotate,scale;
 var scope = angular.element(document.querySelector('[ng-controller="designer"]')).scope();
 var backgroundRect = function(){
@@ -48,6 +50,7 @@ PaperLayers.overlay.importSVG('GripTemplate.svg',function(a,b,c){
 	PaperItems.gripTemplate.scale(.21);
 	PaperItems.gripTemplate.position.setX(PaperItems.gripTemplate.bounds.width/2);
 	PaperItems.gripTemplate.position.setY(PaperItems.gripTemplate.bounds.height/2);
+	scope.loaded = true;
 	//PaperItems.gripOutline.bounds.setCenter(view.center + new Point(2,31));
 });
 PaperLayers.bound.importSVG('svg/rotate.svg',function(a,b,c){
@@ -105,6 +108,8 @@ function onMouseUp(event){
 	dragObject = null;
 	rotating = false;
 	scaling = false;
+	startBounds = null;
+	startRotation = null;
 }
 
 function onMouseDrag(event) {
@@ -116,20 +121,35 @@ function onMouseDrag(event) {
 			point.x -= center.x;
 			point.y -= center.y;
 			var angle = Math.abs(radToDeg(Math.atan(point.y/point.x)));
+			//Find the angle delta;
+			pointDelta = point -= event.delta;
+			var angleDelta = Math.abs(radToDeg(Math.atan(pointDelta.y/pointDelta.x)));
 			if (point.x < 0 ) {
-				angle -= 180
+				angle -= 180;
 				angle *= -1;
-			};
+			}
 			if (point.y < 0 ) angle *= -1;
-			angle += 10.520784313874362
-			scope.selectedObject.rotation = angle;
+			//Do the same with the angle delta;
+			if (pointDelta.x < 0 ) {
+				angleDelta -= 180;
+				angleDelta *= -1;
+			}
+			if (pointDelta.y < 0 ) angleDelta *= -1;
+			var rotation = scope.selectedObject.rotation;
+			rotation += angle - angleDelta;
+			scope.selectedObject.rotation = rotation;
 			PaperFunctions.updateBoundingBox(scope.selectedObject.bounds,scope.selectedObject.rotation);
 			scope.$apply(function(){
 				scope.currentRotation = angle;
 			});
 		} else if (event.item.name == 'scale' || (!rotating && scaling)){
+			if (!startBounds){
+				startBounds = scope.selectedObject.bounds;
+			}
 			scaling = true;
-			scope.selectedObject.scaling += event.delta/100;
+			startBounds.width += event.delta.x;
+			startBounds.height += event.delta.y;
+			scope.selectedObject.bounds = startBounds;
 			PaperFunctions.updateBoundingBox(scope.selectedObject.bounds,scope.selectedObject.rotation);
 		} else {
 			if (dragObject){
@@ -232,9 +252,9 @@ PaperFunctions.createBoundingBox = function(bounds,rotation){
 	PaperBounds.trash = trash.place(new Point(bounds.getBottomLeft().x - padding/2,bounds.getBottomLeft().y + padding/2));
 	PaperBounds.trash.name = 'trash';
 };
-/*function onFrame(event) {
+function onFrame(event) {
 	paper.view.draw();
-}*/
+}
 function radToDeg(rad){
 	return rad * 180 / Math.PI;
 }

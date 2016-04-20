@@ -3,10 +3,10 @@
 	<select>
 
 	</select>
-	<canvas id="c" width="1000" height="1000"></canvas>
+	<canvas id="c" width="2000" height="2000"></canvas>
 	<script>
-		var q=500;
-		var w=500;
+		var q=2000;
+		var w=2000;
 		var a = Math.round(Math.random()*400);
 		var ab = Math.round(Math.random()*40);
 		var c = Math.round(Math.random()*40);
@@ -29,14 +29,13 @@
 			var b_canvas = document.getElementById("c");
 			var b_context = b_canvas.getContext("2d");
 			b_context.fillStyle = calculateColor(x,y);
-			b_context.fillRect(x*2, y*2, 2,2);
+			b_context.fillRect(x, y, 1,1);
 		}
 		function calculateColor(x,y){
-			/*var r= (x+y)%255;
+			var r= (x+y)%255;
 			var g= (y*1.52)%255;
 			var b= (y*2)%255;
-
-
+			
 			var r=(x-y)%255;
 			var g=(x)%255;
 			var b=(y)%100;
@@ -49,20 +48,33 @@
 			var g=(x*x)%255;
 			var b=(y)%255;
 
-			var r=Math.floor((y*0.52)%255);
-			var g=(y*2)%255;
-			var b=(x-y)%255;
 			
 
 			var r=(y*2)%255;
 			var g=(x+r^10)%255;
 			var b=(x+g^10)%255;
 			var r=(x+b^10)%255;
-			
-*/
+
 			var r=(255%(x+y)%128)
 			var g=(255%x)%255;
 			var b=(255%y)%255;
+			
+			
+			var b=Math.floor((y*0.52)%255);
+			var r=(y/(x+1))%255;
+			var g=(x-y)%255;
+
+			
+
+			
+
+			
+
+			
+			
+
+			
+
 			
 			
 
