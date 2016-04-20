@@ -21,6 +21,7 @@ router.post('/svg', function(req, res){
     form.keepExtensions = true;     //keep file extension
     form.parse(req, function(err, fields, files) {
         var doc;
+        var fieldData = (JSON.parse(fields.entry));
         //res.writeHead(200, {'content-type': 'text/plain'});
         res.write('received upload:\n\n');
         console.log("form.bytesReceived");
@@ -66,7 +67,8 @@ router.post('/svg', function(req, res){
                             from: '"Online Private Label System" <no-reply@blenderbottle.com>',
                             to: 'alexanderson1993@gmail.com',
                             subject: 'New OPaLS Submission',
-                            text: 'Hello, \n\nThe following template was just submitted through the Online Private Label System. Attached are the logo, white underlay, and a reference template. \n\n Quantity:\n Color: \n\n\nThanks,\nOPaLS',
+                            text: 'Hello, \n\nThe following template was just submitted through the Online Private Label System. Attached are the logo, white underlay, and a reference template. \n\n' +
+                            ' Name: ' + fieldData.firstName + ' ' + fieldData.lastName + '\n Email: ' + fieldData.email + '\n Quantity:\n Color: \n\n\nThanks,\nOPaLS',
                             attachments: [
                             {
                                 filename:'OPaLSLogo.pdf',
@@ -123,7 +125,7 @@ app.get('/', function(req, res) {
 
 app.use('/api', router);
 
-var server = app.listen(8081, function () {
+var server = app.listen(4456, function () {
 	var host = server.address().address;
 	var port = server.address().port;
 
