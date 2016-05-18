@@ -35,7 +35,11 @@ router.post('/svg', function(req, res){
         binaryData2 = new Buffer(base64Data, 'base64').toString('binary');
         fs.writeFile(files.logo.path + ".png", binaryData, "binary", function (err) {
             if (err) console.log(err); // writes out file without error, but it's not a valid image
-            doc = new PDFDocument({size:[567,267]});
+            fields.sizes = JSON.parse(fields.sizes);
+            fields.templateSize = JSON.parse(fields.templateSize);
+            var aspect = fields.sizes.width / fields.sizes.height;
+            doc = new PDFDocument({size:[567,567 / aspect]});
+            console.log(aspect, 567 / aspect);
             doc.pipe(fs.createWriteStream(files.logo.path + 'output.pdf'));
             doc.image(files.logo.path + ".png",0,0,{width:567});
             doc.save();
@@ -44,7 +48,7 @@ router.post('/svg', function(req, res){
             fs.writeFile(files.logo.path + ".png", binaryData, "binary", function (err) {
                 gm(files.logo.path + ".png").recolor('0 0 0 0 0.99, 0 0 0 0 1, 0 0 0 0 1, 0 0 0 1 0, 0 0 0 1 0').write(files.logo.path + "-whitebg.png", function(err){
                     if (err) console.log(err); // writes out file without error, but it's not a valid image
-                    doc = new PDFDocument({size:[567,267]});
+                    doc = new PDFDocument({size:[567,567 / aspect]});
                     doc.pipe(fs.createWriteStream(files.logo.path + 'whiteOutput.pdf'));
                     doc.image(files.logo.path + "-whitebg.png",0,0,{width:567});
                     doc.save();
@@ -58,9 +62,10 @@ router.post('/svg', function(req, res){
                     //Do the same thing with the template, then send the email
                     fs.writeFile(files.template.path + ".png", binaryData2, "binary", function(err){
                         if (err) console.log(err); // writes out file without error, but it's not a valid image
-                        doc2 = new PDFDocument({layout:'landscape'});
+                        var templateAspect = fields.templateSize.width/fields.templateSize.height;
+                        doc2 = new PDFDocument({size:[612,792], layout:'landscape'});
                         doc2.pipe(fs.createWriteStream(files.logo.path + 'output2.pdf'));
-                        doc2.image(files.template.path + ".png",90,26,{width:612});
+                        doc2.image(files.template.path + ".png",612 / 2 - 150,26,{height:612 - 90});
                         doc2.save();
                         doc2.end();
                         var mailOptions = {

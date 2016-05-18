@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link href="css/scrollbars.css" rel="stylesheet" type="text/css" />
 	<link href="css/loading.css" rel="stylesheet" type="text/css" />
+	<link href="css/submitForm.css" rel="stylesheet" type="text/css" />
 	<link rel='stylesheet' href='css/spectrum.css' />¨
 	<!-- Load the Paper.js library --> 
 	<script type="text/javascript" src="paper-full.js"></script>
@@ -44,12 +45,12 @@
 			<!--<div class="rotateBottle"></div>-->
 			<div class="delete-button"></div>
 		</div>
-		<div id="feedback">
+		<div id="feedback" ng-class="tipsOpen">
 			<div id="feedbackContent">
 				<p id="feedbackHeader">Tips & Tricks</p>
-				{{dict("tips-and-tricks")}}
+				<span ng-bind-html='dict("tips-and-tricks")'></span>
 			</div>
-			<div id="feedbackButton">Tips & Tricks</div>
+			<div id="feedbackButton" ng-click="openTips()">Tips & Tricks</div>
 		</div>
 		<div ng-if="!loaded" class="loadingHolder">
 			<div class="loading"><span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span></div>
@@ -93,15 +94,20 @@
 					<option ng-repeat="productOptions in products" id="productOptions.id">{{productOptions.name}}</option>
 				</select>
 			</div>
+			<div id="printableArea" ng-if="product.printableSizes"class="select">
+				<select ng-model="printableArea" ng-click="changePrintableArea($event)" class="title">
+					<option ng-repeat="size in product.printableSizes" ng-value="size.name">Printable Area: {{size.name}}</option>
+				</select>
+			</div>
 			<div id="sidebarControls">
 				<p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
 				<p id="filereader">File API & FileReader API not supported</p>
 				<p id="formdata">XHR2's FormData is not supported</p>
 				<p id="progress">XHR2's upload progress isn't supported</p>
 				<div id="bottleControls" ng-repeat="part in product.parts" ng-show="part.name == selectedPart">
-					<div class="leftArrow"></div>
+					<!--<div class="leftArrow"></div>-->
 					<p class="controlslabel">{{part.name | caps}}</p>
-					<div class="rightArrow"></div>
+					<!--<div class="rightArrow"></div>-->
 					<div ng-if="part.colors">
 						<p class="controlsComment">Choose Your {{part.name | caps}} Color</p>
 						<div class="colorPicker">
@@ -115,9 +121,7 @@
 						</div>
 					</div>
 					<div id="textControls" ng-show="'text' == selectedPart">
-						<div class="leftArrow"></div>
 						<p class="controlslabel">Text</p>
-						<div class="rightArrow"></div>
 						<p class="controlsComment">Add Your Personalized Text</p>
 						<input type="button" value="Add Text" ng-click="addText()">
 						<div id="textControlButtons" ng-show="selectedObject">
@@ -159,12 +163,10 @@
 						</div>
 					</div>
 					<div id="imageControls" ng-show="'image' == selectedPart">
-						<div class="leftArrow"></div>
 						<p class="controlslabel">Artwork</p>
-						<div class="rightArrow"></div>
 						<p class="controlsComment">Upload and Design Your Artwork</p>
 						<input type="button" class="btn btn-info" id="fileSelect" value="Upload an Image"  data-placement="top" data-toggle="tooltip" title="By uploading this image you certify that you have rights to use this image commercially." ng-click="openFile()">
-						<p class='imageInfo' data-container="body" title="Our designer supports the use of .png, .jpg, and .gif. If you would like to create your own design using 3rd party software (such as Adobe Illustrator of Photoshop), we recommend exporting your final design as a PNG with transparency." data-toggle="tooltip" data-placement="top" data-content="Our designer supports the use of .png, .jpg, and .gif. If you would like to create your own design using 3rd party software (such as Adobe Illustrator of Photoshop), we recommend exporting your final design as a PNG with transparency.">What filetypes are supported?</p>
+						<p class='imageInfo' data-container="body" title="Our designer supports the use of .png, .jpg, .gif, and .svg. If you would like to create your own design using 3rd party software (such as Adobe Illustrator of Photoshop), we recommend exporting your final design as a PNG with transparency." data-toggle="tooltip" data-placement="top" data-content="Our designer supports the use of .png, .jpg, .gif, and .svg. If you would like to create your own design using 3rd party software (such as Adobe Illustrator of Photoshop), we recommend exporting your final design as a PNG with transparency.">What filetypes are supported?</p>
 						<div ng-if="false"  id="imageControlButtons" class="">
 							<div id="imageControlsPicker">
 								<div class="selected"><a href="#" id="artPick" data-controls="artControl" data-toggle="tooltip" data-placement="bottom" title="Pre-approved Artwork"> </a></div>
@@ -204,9 +206,9 @@
 					</div>
 				</div>
 				<div id="submission">
-					<button class='btn btn-primary' type="button" value="Save" onClick="saveImage(); setTimeout(function(){closeModal();},3000);" data-container="body" title="Design Saved" data-toggle="popover" data-placement="top" data-content="Your design will automatically be reloaded when you revisit this page.">SAVE</button>
+					<button class='btn btn-primary' type="button" value="Save" onclick="PaperFunctions.saveCanvas(); setTimeout(function(){closePopover();},3000);" data-container="body" title="Design Saved" data-toggle="popover" data-placement="top" data-content="Your design will automatically be reloaded when you revisit this page.">SAVE</button>
 
-					<button type="button" id="resetPopover" class="btn btn-primary" data-container="body" title="Are you sure? This will erase your current design." data-toggle="popover" data-placement="top" data-content="<button class='btn btn-primary' onClick='closeModal()'>CANCEL</button><button class='btn btn-warning' onClick='resetCanvas();closeModal();'>RESET</button>">
+					<button type="button" id="resetPopover" class="btn btn-primary" data-container="body" title="Are you sure? This will erase your current and saved design." data-toggle="popover" data-placement="top" data-content="<button class='btn btn-primary' onclick='closePopover()'>CANCEL</button><button class='btn btn-warning' onclick='PaperFunctions.resetCanvas();closePopover();'>RESET</button>">
 					RESET
 				</button>
 
@@ -224,55 +226,107 @@
 			</div>
 		</div>
 		<div id='sidebar-right'>
-			<p id="descriptionHead">Design, vote, win!</p>
+			<p id="descriptionHead">Instructions</p>
 			<div class="contestDescription">
-				{{selectedPart}}
-				{{currentRotation}}
-				{{dict("contest-description")}}
+				<span ng-bind-html='dict("contest-description")'></span>
 			</div>
 		</div>
 		<input type="file" style="visibility:hidden;" size="20" id="imageUpload" class=" " onChange="previewfile(event.target.files[0])">
 		<div class="modal fade submitModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="padding:10px;">
+				<form role='form' style="" >
+					<div class="modal-content" style="padding:10px;" ng-class="backsideClass">
 
-					<div class="row-fluid">
-						<p class="formHead">Submit Your Design</p>
-					</div>
-					<div class="row-fluid">
-						<img id="submitImage" width="400" src="{{previewImageSource}}" style="" />
+						<div class="row-fluid">
+							<p class="formHead">Submit Your Design</p>
+						</div>
+						<div class="row-fluid">
+							<img id="submitImage" width="400" src="{{previewImageSource}}" style="" />
 
-						<form role='form' style="" id="finishedForm" >
+							<div class="finishedForm" style="float:right;">
+								<div class="form-group">
+									<label for="name">Your Name:</label>
+									<div class="row">
+										<div class="col-sm-6">
+											<input type='text' ng-model="submitForm.firstName" class="form-control" id="firstName" name="EntryForm[firstName]" placeholder="First Name" />
+										</div>
+										<div class="col-sm-6">
+											<input type='text' ng-model="submitForm.lastName" class="form-control" id="lastName" name="EntryForm[lastName]" placeholder="Last Name" />
 
-							<div class="form-group">
-								<label for="name">Your Name:</label>
-								<div class="row">
-									<div class="col-sm-6">
-										<input type='text' ng-model="submitForm.firstName" class="form-control" id="firstName" name="EntryForm[firstName]" placeholder="First Name" />
+										</div>
 									</div>
-									<div class="col-sm-6">
-										<input type='text' ng-model="submitForm.lastName" class="form-control" id="lastName" name="EntryForm[lastName]" placeholder="Last Name" />
+								</div>
+								<div class="form-group">
+									<label for="email">Your Email:</label>
+									<div class="input-group">
+										<input type='email' id="email" ng-model="submitForm.email" name="EntryForm[email]"  class="form-control" placeholder="Enter Email" />
+									</div>
+								</div>
+								<div class="form-group termsCheck">
+									<input type="checkbox" ng-model="submitForm.terms" name="EntryForm[termsCheckbox]" id="termsCheckbox" />
+									<label for="termsCheckbox">I have read and understood the Terms and Conditions</label>
+									<div class="terms">
+										<span ng-bind-html="dict('terms-and-conditions')"></span>
+									</div>
+								</div>
+								<button ng-click="submitNext()" class="btn btn-info" type='button' ng-disabled='!(submitForm.firstName && submitForm.lastName && submitForm.email && submitForm.terms)'>Next >></button>
+							</div>
+						</div>
+					</div>
+					<div class="modal-content" style="padding:10px;" ng-class="frontsideClass">
+						<div class="row-fluid">
+							<p class="formHead">Enter Payment & Shipment Information</p>
+						</div>
+						<div class="row-fluid finishedForm">
+							<div class="col-sm-6">
+								<h3>Shipping Information</h3>
+								<div class="form-group">
+									<label for="name">Address</label>
+									<div class="form-group">
+										<input class="form-control" ng-model="submitForm.shipping.address1" type="text" placeholder="123 Streetname" />
+									</div>
+									<small>Street address, P.O. Box, company name, c/o</small>
+									<div class="form-group">
+										<input class="form-control" ng-model="submitForm.shipping.address2" type="text" placeholder="Suite 101" />
+									</div>
+									<small>Apartment, suite, unit, building, floor, etc.</small>
 
+								</div>
+								<div class="form-group">
+									<div class="form-group" style="float:left">
+										<label for="name">City</label>
+										<input class="form-control" ng-model="submitForm.shipping.city" type="text" placeholder="Townname" />
+									</div>
+									<div class="form-group" style="float:right">
+										<label for="name">State</label>
+										<input class="form-control" ng-model="submitForm.shipping.state" type="text" placeholder="ST" />
+									</div>
+
+								</div>
+								<div class="form-group" style="clear:both">
+									<div class="form-group">
+										<label for="name">ZIP Code</label>
+										<input class="form-control" ng-model="submitForm.shipping.zip" type="text" placeholder="19159" />
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="email">Your Email:</label>
-								<div class="input-group">
-									<input type='email' id="email" ng-model="submitForm.email" name="EntryForm[email]"  class="form-control" placeholder="Enter Email" />
+							<div class="col-sm-6" style="padding-left: 30px; padding-right: 30px;">
+								<h3>Billing Information</h3>
+								<div class="card-wrapper"></div>
+								<div class="form-group">
+									<input class="form-control smallInput cardInput" ng-model="cardData.number" type="text" placeholder="Card Number" id="number" />
+									<input class="form-control smallInput cardInput" ng-model="cardData.name" type="text" placeholder="Full name" id="name" />
+								</div>
+								<div class="form-group">
+									<input class="form-control smallInput cardInput" ng-model="cardData.expiry" type="text" placeholder="MM/YY" id="expiry" />
+									<input class="form-control smallInput cardInput" ng-model="cardData.cvc" type="text" placeholder="CVC" id="cvc" />
 								</div>
 							</div>
-							<div class="form-group termsCheck">
-								<input type="checkbox" ng-model="submitForm.terms" name="EntryForm[termsCheckbox]" id="termsCheckbox" />
-								<label for="termsCheckbox">I have read and understood the Terms and Conditions</label>
-								<div class="terms">
-									{{dict("terms")}}
-								</div>
-							</div>
-							<button ng-click="submit()" class="btn btn-primary submitEntry" type='button' ng-disabled='!(submitForm.firstName && submitForm.lastName && submitForm.email && submitForm.terms)'>Submit</button>
-						</form>
+							<button ng-click="submit()" class="btn btn-primary" type='button' style="float:right;" ng-disabled='!(submitForm.shipping.address1 && submitForm.shipping.city && submitForm.shipping.state && submitForm.shipping.zip && cardData.number && cardData.name && cardData.cvc && cardData.expiry)'>Submit</button>
+							<button ng-click="submitBack()" class="btn btn-info" style="float:left;" type='button'><< Back</button>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		<div class="modal fade socialModal in" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -359,5 +413,6 @@
 	<script src="js/jquery.mousewheel.js"></script>
 	<script src="js/jquery.jscrollpane.min.js"></script>
 	<script src="js/underscore.js"></script>
+	<script src="js/card.js"></script>
 </body>
 </html>
