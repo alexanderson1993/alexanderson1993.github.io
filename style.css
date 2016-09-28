@@ -6,13 +6,22 @@
     .container {
         min-height: 100%;
     }
-    
+    .kitty{
+        transition: all 1s ease-in-out;
+    }
+    .kitty:hover{
+        transform: rotateY(1260deg);
+    }
     section {
         overflow: auto;
         padding-bottom: 150px;
         /* this needs to be bigger than footer height*/
     }
-    
+    aside {
+        background-color: rgba(0,0,0,0.05);
+        border-radius: 5px;
+        padding: 10px;
+    }
     footer {
         position: relative;
         margin-top: -150px;
