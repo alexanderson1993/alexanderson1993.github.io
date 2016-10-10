@@ -5,58 +5,86 @@
     <title>R. Alex Anderson</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <div class="container">
-        <header>
-            <h1>R. Alex Anderson</h1>
-        </header>
-        <div class="col-sm-9">
-        <img src="http://ralexanderson.com/assets/headshot_small.jpg" style="float: left; height: 200px; margin: 15px;"
-            <p>R. Alex Anderson is a 23 year old college student living in Provo, Utah.
-                He enjoys creating, sharing, exploring, teaching and learning. He currently
-                works at <a href="http://www.blenderbottle.com">BlenderBottle</a> of Lehi,
-                Utah in the IT Department. He is also co-founder of the educational
-                software venture <a href="http://infinitedev.com">Infinite
-                Development</a>.
-            </p>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">R. Alex Anderson</a>
+            </div>
 
-
-            <p>In former days, he was flight director for the <a href=
-                "http://spacecenter.alpineschools.org">Christa McAuliffe Space Education
-                Center</a>, serving as designer, programmer, and all-around computer
-                genius. He is now part of the <a href="http://farpointstation.org">Farpoint
-                Station</a> creative team assisting with constructing and programming the
-                <a href="http://spaceedventures.org">Voyager II</a>.
-            </p>
-
-
-            <p>He is enrolled at <a href="http://byu.edu">Brigham Young University</a>,
-                where he studies Information Systems with a minor in Graphic Design.
-            </p>
-
-
-            <p>Alex recently completed a <a href=
-                "http://pittsburghmissionmemoirs.blogspot.com">two year mission</a> for the
-                Church of Jesus Christ of Latter-day Saints in Pittsburgh,
-                Pennsylvania.
-            </p>
-        </div>
-        <aside class="col-sm-3">
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="interests.html">Interests</a></li>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home <span class="sr-only">(current)</span></a></li>
+                    <li><a href="interests.html">About</a></li>
                     <li><a href="resume/resume.html">Resume</a></li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     <li><a href="http://ralexanderson.com">My Website</a></li>
                 </ul>
-            </nav>
-        </aside>
-        <footer>
-            Copyright R. Alex Anderson 2016
-        </footer>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <header>
+        <h1>R. Alex Anderson</h1>
+    </header>
+    <div class="col-sm-9">
+        <img src="http://ralexanderson.com/assets/headshot_small.jpg" class="img-circle" style="float: left; height: 200px; margin: 15px;" />
+        <p>R. Alex Anderson is a 23 year old college student living in Provo, Utah.
+            He enjoys creating, sharing, exploring, teaching and learning. He currently
+            works at <a href="http://www.blenderbottle.com">BlenderBottle</a> of Lehi,
+            Utah in the IT Department. He is also co-founder of the educational
+            software venture <a href="http://infinitedev.com">Infinite
+            Development</a>.
+        </p>
+
+
+        <p>In former days, he was flight director for the <a href=
+            "http://spacecenter.alpineschools.org">Christa McAuliffe Space Education
+            Center</a>, serving as designer, programmer, and all-around computer
+            genius. He is now part of the <a href="http://farpointstation.org">Farpoint
+            Station</a> creative team assisting with constructing and programming the
+            <a href="http://spaceedventures.org">Voyager II</a>.
+        </p>
+
+
+        <p>He is enrolled at <a href="http://byu.edu">Brigham Young University</a>,
+            where he studies Information Systems with a minor in Graphic Design.
+        </p>
+
+
+        <p>Alex recently completed a <a href=
+            "http://pittsburghmissionmemoirs.blogspot.com">two year mission</a> for the
+            Church of Jesus Christ of Latter-day Saints in Pittsburgh,
+            Pennsylvania.
+        </p>
     </div>
+    <aside class="col-sm-3">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="interests.html">Interests</a></li>
+                <li><a href="resume/resume.html">Resume</a></li>
+                <li><a href="http://ralexanderson.com">My Website</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <footer>
+        Copyright R. Alex Anderson 2016
+    </footer>
+</div>
 </body>
 
 </html>
